@@ -1,0 +1,14 @@
+{
+  "name": "notebookAPI",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/HsnAlwayel/notebookAPI.git",
+  "author": "Hassan Alwayel <hsn.alwayel@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "nodemon app.js"
+  }
+}
