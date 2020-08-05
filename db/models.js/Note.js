@@ -2,29 +2,29 @@ const { DataTypes, Model } = require("sequelize");
 const db = require("../db");
 const SequelizeSlugify = require("sequelize-slugify");
 
-class Note extends Model { }
+class Note extends Model {}
 
-Note.init({
+Note.init(
+  {
     title: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
     },
     slug: {
-        type: DataTypes.STRING,
-        unique: true,
+      type: DataTypes.STRING,
+      unique: true,
     },
     body: {
-        type: DataTypes.STRING,
-        // allowNull: false,
+      type: DataTypes.STRING,
+      // allowNull: false,
     },
-},
-    {
-        sequelize: db,
-    }
+  },
+  {
+    sequelize: db,
+  }
 );
 
 SequelizeSlugify.slugifyModel(Note, {
-    source: [`title`]
+  source: [`title`],
 });
 
 module.exports = Note;
