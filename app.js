@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+
+//Data
 const db = require("./db/db");
 
 //Routes
@@ -17,6 +19,21 @@ const run = async () => {
   } catch (error) {
     console.error("Error connecting to the database: ", error);
   }
+  app.use(cors());
+  app.use(bodyParser.json());
+  app.use("/notebooks", notebookRoutes);
+  app.use("/notes", noteRoutes);
+
+  app.use((req, res, next) => {
+    const error = new Error("Path Not Found");
+    error.status = 404;
+    next(error);
+  });
+
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.json(err.message || "Internal Server Error.");
+  });
 
   await app.listen(8000, () => {
     console.log("The application is running on localhost:8000");
@@ -24,32 +41,3 @@ const run = async () => {
 };
 
 run();
-
-app.use(cors());
-app.use(bodyParser.json());
-
-app.use((req, res, next) => {
-  console.log("im a middleware method");
-  next();
-});
-
-//Routers Use
-app.use("/notebooks", notebookRoutes);
-app.use("/notes", noteRoutes);
-
-// No Path Found
-app.use((req, res, next) => {
-  res.status(404).json("Path not found");
-});
-//Error Handeling MiddleWare
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message || "internal Server Error",
-  });
-});
-
-//localhost:8000
-app.listen(8001, () => {
-  console.log("The application is running on localhost:8000");
-});
