@@ -1,5 +1,4 @@
-const { Note, Notebook } = require("../db/models.js");
-const { model } = require("../db/db.js");
+const { Note, Notebook, Tag, Note_Tags } = require("../db/models.js");
 
 //Fetch
 exports.fetchNote = async (noteId) => {
@@ -18,11 +17,19 @@ exports.noteList = async (req, res, next) => {
     try {
         const notes = await Note.findAll({
             attributes: { exclude: ["createdAt", "updatedAt"] },
-            include: {
+            include: [{
                 model: Notebook,
                 as: "notebook",
                 attributes: ["name"],
             }
+                , {
+                model: Tag,
+                attributes: ["id"],
+                through: {
+                    model: Note_Tags,
+                }
+            },
+            ],
         });
         res.json(notes);
     } catch (error) {
@@ -47,5 +54,17 @@ exports.noteDelete = async (req, res, next) => {
         res.status(204).end();
     } catch (error) {
         next(error)
+    }
+};
+
+//tagCreate
+exports.tagCreate = async (req, res, next) => {
+    try {
+        req.body.noteId = req.note.id;
+        const newTag = await Tag.create(req.body);
+
+        res.status(201).json(newTag);
+    } catch (error) {
+        next(error);
     }
 };

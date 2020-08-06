@@ -1,4 +1,5 @@
-const { Notebook, Note } = require("../db/models.js/index.js");
+const { Notebook, Note, Note_Tags } = require("../db/models.js/index.js");
+const { fetchTag } = require("../contorllers/tagController");
 
 //Fetch
 exports.fetchNotebook = async (notebookId, next) => {
@@ -62,8 +63,19 @@ exports.noteCreate = async (req, res, next) => {
   try {
     req.body.notebookId = req.notebook.id;
     const newNote = await Note.create(req.body);
+    const foundTag = (req.body.tag);
+    const NT = {
+      NoteId: newNote.id,
+      TagId: foundTag,
+    };
+    await Note_Tags.create(NT);
+
     res.status(201).json(newNote);
   } catch (error) {
     next(error);
   }
 };
+
+
+
+

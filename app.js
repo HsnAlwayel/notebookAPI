@@ -8,13 +8,14 @@ const db = require("./db/db");
 //Routes
 const noteRoutes = require("./routes/notes");
 const notebookRoutes = require("./routes/notebooks");
+const tagRoutes = require("./routes/tags");
 
 //Express instance
 const app = express();
 
 const run = async () => {
   try {
-    await db.sync();
+    await db.sync({ alter: true });
     console.log("Connection to the database successful!");
   } catch (error) {
     console.error("Error connecting to the database: ", error);
@@ -23,6 +24,7 @@ const run = async () => {
   app.use(bodyParser.json());
   app.use("/notebooks", notebookRoutes);
   app.use("/notes", noteRoutes);
+  app.use("/tags", tagRoutes);
 
   app.use((req, res, next) => {
     const error = new Error("Path Not Found");

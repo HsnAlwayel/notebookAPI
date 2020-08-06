@@ -6,6 +6,7 @@ const {
     noteUpdate,
     noteDelete,
     fetchNote,
+    tagCreate,
 } = require("../contorllers/noteController");
 
 //Param
@@ -29,4 +30,6 @@ router.put("/:noteId", noteUpdate);
 //Delete
 router.delete("/:noteId", noteDelete);
 
+//Create Tag
+router.post("/:noteId/tags", tagCreate);
 module.exports = router;
