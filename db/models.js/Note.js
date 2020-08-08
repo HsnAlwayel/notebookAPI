@@ -15,7 +15,6 @@ Note.init(
     },
     body: {
       type: DataTypes.STRING,
-      // allowNull: false,
     },
   },
   {

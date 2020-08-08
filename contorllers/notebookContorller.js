@@ -63,7 +63,7 @@ exports.noteCreate = async (req, res, next) => {
   try {
     req.body.notebookId = req.notebook.id;
     const newNote = await Note.create(req.body);
-    const foundTag = (req.body.tag);
+    const foundTag = req.body.tag;
     const NT = {
       NoteId: newNote.id,
       TagId: foundTag,
@@ -75,7 +75,3 @@ exports.noteCreate = async (req, res, next) => {
     next(error);
   }
 };
-
-
-
-
